@@ -9,7 +9,7 @@ function addTask(description, dueTime) {
         const date = new Date(dueTime)
         const span = document.createElement("span")
         span.classList.add("due");
-        span.appendChild(document.createTextNode("due " + date.toLocaleString()));
+        span.appendChild(document.createTextNode("due " + date.toLocaleString("en-US", {timeZone:'EST'})));
         li.appendChild(span)
     }
     const button = document.createElement("button");
@@ -27,13 +27,10 @@ function addTask(description, dueTime) {
 function dateAndTimeToTimestamp(dateInputElement, timeInputElement) {
     const dueDate = dateInputElement.valueAsNumber; // Returns the timestamp at midnight for the given date
     const dueTime = timeInputElement.valueAsNumber; // Returns the number of milliseconds from midnight to the time
-    console.log("dueDate", dueDate);
-    console.log("dueTime", dueTime);
 
     if(dueDate && dueTime) { // The user specified both a due date & due time
         //Add the timezone offset to account for the fact that timestamps are specified by UTC
-        const timezoneOffset =  (12 - new Date().getUTCDate()) * 60 * 60 * 1000;
-        console.log("timezoneOffset", timezoneOffset);
+        const timezoneOffset =  (new Date().getTimezoneOffset()) * 60 * 1000;
         return dueDate + dueTime + timezoneOffset;
     } else {
         // if the user did not specify both a due date and due time, return false
